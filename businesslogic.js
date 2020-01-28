@@ -12,3 +12,6 @@ function addUserToSystem(name, birthday, gender, email){
     userList.push(newUser);
 };
 
+function getUserList(){
+  return userList;
+}
