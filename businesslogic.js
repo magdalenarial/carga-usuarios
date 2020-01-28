@@ -1,17 +1,24 @@
-var userList = [];
-
 function addUserToSystem(name, birthday, gender, email){
-  
+  userList = getUserList()
   var newUser =  { 
     name : name.value,
     birthday : birthday.value,
     gender : gender.value,
     email : email.value,
     };
-    console.log(newUser);
-    userList.push(newUser);
-};
+    userList.push(newUser)
+    saveUserList(userList)
+  };
 
 function getUserList(){
-  return userList;
+  try{
+    return JSON.parse(localStorage.getItem("usuarios"));
+  }
+  catch{
+    return []
+  }
+}
+
+function saveUserList(arrayToSave){
+  localStorage.setItem('usuarios', JSON.stringify(arrayToSave))
 }
