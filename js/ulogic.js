@@ -10,16 +10,32 @@ function cargarEventListeners() {
     
 }
 
-//FUNCIONES 
-function saveUser(){
-  var idUser = document.getElementById("idUser").value;
-  var name = document.getElementById('inputName').value;
-  var birthday = document.getElementById('inputBirthday').value;
-  var gender = document.getElementById('inputGender').value;
-  var email = document.getElementById('inputEmail').value;
 
-      var fila=`<tr>
-      <td>${idUser}</td>
+//FUNCIONES 
+function readUsersInfo(users){
+  const infoUser = {
+    id: users.getElementById("idUser").value;
+    name: document.getElementById('inputName').value;
+    birthday: document.getElementById('inputBirthday').value;
+    gender: document.getElementById('inputGender').value;
+    email: document.getElementById('inputEmail').value;
+  } 
+  //Crea la lista con el objeto
+  userList = [...userList, infoUser];
+
+
+  usersHTML();
+};
+
+
+
+function usersHTML() {
+  // Recorre el carrito y genera el HTML
+  userList.forEach( users => {
+      const { id, name, birthday, gender, email } = users;
+      const row = document.createElement('tr');
+      row.innerHTML =`<tr>
+      <td>${id}</td>
       <td>${name}</td>
       <td>${birthday}</td>
       <td>${gender}</td>
@@ -28,7 +44,8 @@ function saveUser(){
       <td><button class="btn btn-primary" id="delete">eliminar</button></td>
     </tr>`;
 
-    var btn = document.createElement("TR");
-   	btn.innerHTML=fila;
-    document.getElementById("tableBody").appendChild(btn);
-};
+      // Agrega el HTML del carrito en el tbody
+      usersTable.appendChild(row);
+  });
+
+}
