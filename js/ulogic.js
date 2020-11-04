@@ -45,7 +45,7 @@ function readUsersInfo(users){
 
 function drawUsersList() {
 
-  limpiarHTML();
+  cleanHTML();
 
   // Recorre el carrito y genera el HTML
   userList.forEach( users => {
@@ -99,7 +99,7 @@ function editUser(e){
 
 
 // Limpiar el HTML 
-function limpiarHTML() {
+function cleanHTML() {
   while( usersTable.firstChild) {
     usersTable.removeChild(usersTable.firstChild);
   }
