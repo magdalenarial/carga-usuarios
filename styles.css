@@ -1,0 +1,26 @@
+/*========== GOOGLE FONTS =========*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+}
+
+.container-fluid {
+    display: flex;
+    flex:1 1 auto;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 920px;
+}
+
+table {
+    margin: 10rem;
+}
