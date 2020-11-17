@@ -95,6 +95,8 @@ function deleteUser(e){
 //Edita al usuario
 function editUser(e){
   e.preventDefault();
+  document.querySelector('#btnSaveUser').removeEventListener('click', readUsersInfo);
+  document.querySelector('#btnSaveUser').addEventListener('click', updateUsers);
   if(e.target.classList.contains('edit-user')) {
       const userId = e.target.getAttribute('data-id');
 
@@ -107,6 +109,18 @@ function editUser(e){
   }
 }
 
+function updateUsers() {
+  const indexUser = userList.findIndex(x => x.id === document.getElementById("idUser").value);
+  userList[indexUser].name = document.getElementById('inputName').value;
+  userList[indexUser].birthday = document.getElementById('inputBirthday').value;
+  userList[indexUser].gender = document.getElementById('inputGender').value;
+  userList[indexUser].email = document.getElementById('inputEmail').value;
+
+  document.querySelector('#btnSaveUser').removeEventListener('click', updateUsers);
+  document.querySelector('#btnSaveUser').addEventListener('click', readUsersInfo);
+
+  drawUsersList();
+}
 
 // Limpiar el HTML 
 function cleanHTML() {
@@ -114,3 +128,4 @@ function cleanHTML() {
     usersTable.removeChild(usersTable.firstChild);
   }
 }
+
