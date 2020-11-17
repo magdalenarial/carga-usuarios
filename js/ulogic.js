@@ -9,27 +9,19 @@ let userList = [];
 //Eventlisteners:
 cargarEventListeners();
 function cargarEventListeners() {
-    btnSaveUser.addEventListener('click', readUsersInfo);
+  // Muestra los usuarios de Local Storage
+  document.addEventListener('DOMContentLoaded', () => {
+    userList = JSON.parse( localStorage.getItem('userList') ) || [];
     
-    //Elimina usuarios del carrito
-    table.addEventListener('click', deleteUser);
-
-    //Edita el usuario
-    table.addEventListener('click', editUser);
-
-// Muestra los usuarios de Local Storage
-       document.addEventListener('DOMContentLoaded', () => {
-        userList = JSON.parse( localStorage.getItem('userList') ) || [];
-
-        drawUsersList();
-});
+    drawUsersList();
+  });
 
 }
 
 //FUNCIONES 
 function readUsersInfo(users){
   const infoUser = {
-    id: document.getElementById("idUser").value,
+    dni: document.getElementById("inputDni").value,
     name: document.getElementById('inputName').value,
     birthday: document.getElementById('inputBirthday').value,
     gender: document.getElementById('inputGender').value,
@@ -51,23 +43,38 @@ function drawUsersList() {
 
   // Recorre el la lista de usuario y genera el HTML
   userList.forEach( users => {
-      const { id, name, birthday, gender, email } = users;
+      const { dni, name, birthday, gender, email } = users;
       const row = document.createElement('tr');
       row.innerHTML =`<tr>
-      <td>${id}</td>
+      <td>${dni}</td>
       <td>${name}</td>
       <td>${birthday}</td>
       <td>${gender}</td>
       <td>${email}</td>
-      <td><button class="btn btn-primary edit-user" data-toggle="modal" data-target="#exampleModal" data-id="${id}"><i class="far fa-edit"></i></button></td>
-      <td><button class="btn btn-danger delete-user" data-id="${id}"><i class="fas fa-trash-alt"></i></button></td>
+      <td><button class="btn btn-primary edit-user" data-toggle="modal" data-target="#exampleModal" data-id="${dni}"><i class="far fa-edit"></i></button></td>
+      <td><button class="btn btn-danger delete-user" data-id="${dni}"><i class="fas fa-trash-alt"></i></button></td>
     </tr>`;
 
       // Agrega el HTML del usuario en el tbody
       usersTable.appendChild(row);
   });
-      //Agregar la lista al LocalStorage
-      sincronizarStorage();
+
+  //Agregar la lista al LocalStorage
+    sincronizarStorage();
+    btnSaveUser.addEventListener('click', readUsersInfo);
+    if (userList != []){
+  
+      //Elimina usuarios del carrito
+      document.querySelectorAll('.delete-user').forEach(deleteButton =>
+        deleteButton.addEventListener('click', deleteUser)
+      );
+      
+    
+      //Edita el usuario
+      document.querySelectorAll('.edit-user').forEach(editButton =>
+        editButton.addEventListener('click', editUser)
+      );
+    }
 }
 
 
@@ -85,7 +92,7 @@ function deleteUser(e){
 
 
       //elimina el usuario del arreglo de userList por el data-id
-      userList = userList.filter( users => users.id !== usersId);
+      userList = userList.filter( users => users.dni !== usersId);
     
      drawUsersList();
   }
@@ -100,8 +107,8 @@ function editUser(e){
   if(e.target.classList.contains('edit-user')) {
       const userId = e.target.getAttribute('data-id');
 
-        let user = userList.find(x => x.id === userId);
-        document.getElementById("idUser").value = user.id;
+        let user = userList.find(x => x.dni === userId);
+        document.getElementById('inputDni').value = user.dni;
         document.getElementById('inputName').value = user.name;
         document.getElementById('inputBirthday').value = user.birthday;
         document.getElementById('inputGender').value = user.gender;
@@ -110,7 +117,7 @@ function editUser(e){
 }
 
 function updateUsers() {
-  const indexUser = userList.findIndex(x => x.id === document.getElementById("idUser").value);
+  const indexUser = userList.findIndex(x => x.dni === document.getElementById("inputDni").value);
   userList[indexUser].name = document.getElementById('inputName').value;
   userList[indexUser].birthday = document.getElementById('inputBirthday').value;
   userList[indexUser].gender = document.getElementById('inputGender').value;
@@ -120,11 +127,12 @@ function updateUsers() {
   document.querySelector('#btnSaveUser').addEventListener('click', readUsersInfo);
 
   drawUsersList();
+  form.reset();
 }
 
 // Limpiar el HTML 
 function cleanHTML() {
-  while( usersTable.firstChild) {
+  while(usersTable.firstChild) {
     usersTable.removeChild(usersTable.firstChild);
   }
 }
